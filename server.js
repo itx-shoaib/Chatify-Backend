@@ -3,9 +3,15 @@ const dbconfig = require('./db')
 
 const app = express();
 
+// Middlewear
+app.use(express.json())
 
-app.get("/test", (req, res) => {
-    res.json("test ok")
-})
+// Routers
+const userRouter = require('./routes/userRoute')
 
-app.listen(4040)
+// API PATH
+app.use('/api/user', userRouter)
+
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => console.log(`Node server started by using nodemon on port ${port} `))
