@@ -6,7 +6,10 @@ const app = express();
 
 // Middlewear
 app.use(express.json())
-app.use(cors());
+app.use(cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL
+}));
 
 // Routers
 const userRouter = require('./routes/userRoute')
