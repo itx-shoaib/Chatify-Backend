@@ -1,10 +1,12 @@
 const express = require("express");
+const cors = require("cors")
 const dbconfig = require('./db')
 
 const app = express();
 
 // Middlewear
 app.use(express.json())
+app.use(cors());
 
 // Routers
 const userRouter = require('./routes/userRoute')
