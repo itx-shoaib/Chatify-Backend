@@ -9,13 +9,30 @@ const createUser = async (req, res) => {
     try {
         const { username, password } = req.body;
         const user = await userModal.create({ username, password });
-        const token = jwt.sign({ userid: user._id }, secret);
-        res.cookie("token", token).status(201).json({ id: user._id });
+        const token = jwt.sign({ userid: user._id, username }, secret);
+        res.cookie("token", token, { sameSite: "none", secure: true }).status(201).json({ id: user._id });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
 }
 
+const getLoggedInUser = async (req, res) => {
+    try {
+        const { token } = res.cookie.token
+        if (token) {
+            jwt.verify(token, secret, {}, (err, UserData) => {
+                if (err) throw err
+                res.json(UserData)
+            })
+        } else {
+            res.status(401).json({ error: "No token" });
+        }
+    } catch (error) {
+        res.status(400).json({ message: err.message });
+    }
+}
+
 module.exports = {
-    createUser
+    createUser,
+    getLoggedInUser
 };
