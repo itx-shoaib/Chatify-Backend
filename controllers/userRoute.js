@@ -10,7 +10,7 @@ const createUser = async (req, res) => {
         const { username, password } = req.body;
         const user = await userModal.create({ username, password });
         const token = jwt.sign({ userid: user._id }, secret);
-        res.cookie("token", token).status(201).json({ _id: user._id });
+        res.cookie("token", token).status(201).json({ id: user._id });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
